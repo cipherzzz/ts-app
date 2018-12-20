@@ -1,12 +1,10 @@
 import chokidar from "chokidar";
 import { checkDb } from "./steps/check-db";
 import { checkRedis } from "./steps/check-redis";
-import { genClient } from "./steps/gen-client";
 import { generateExpressRoutes } from "./steps/gen-routes";
 import { registerQuitKey } from "./steps/register-quit-key";
 import { startApi } from "./steps/start-api";
 import { startDocker } from "./steps/start-docker";
-import { webpackDevServer } from "./steps/start-webpack";
 import { debounce } from "./utils/debounce";
 
 /**
@@ -22,18 +20,15 @@ import { debounce } from "./utils/debounce";
     process.exit(1);
   }
 
-  await Promise.all([
-    generateExpressRoutes().then(() => startApi()),
-    webpackDevServer(),
-  ]);
+  await Promise.all([generateExpressRoutes().then(() => startApi())]);
 
-  const regenerateRoutes = debounce(async (args) => {
+  const regenerateRoutes = debounce(async args => {
     const routesChanged =
       args.indexOf("server.ts") !== -1 ||
       args.indexOf("api/controllers") !== -1;
 
     if (routesChanged) {
-      await Promise.all([genClient(), generateExpressRoutes()]);
+      await Promise.all([generateExpressRoutes()]);
     } else {
       await startApi();
     }
