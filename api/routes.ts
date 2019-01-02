@@ -5,7 +5,7 @@ import { WidgetsController } from './controllers/widgets-controller';
 const models: TsoaRoute.Models = {
   "IWidget": {
     "properties": {
-      "id": { "dataType": "double", "required": true },
+      "id": { "dataType": "double" },
       "label": { "dataType": "string", "required": true },
       "color": { "dataType": "string", "required": true },
     },
@@ -13,7 +13,7 @@ const models: TsoaRoute.Models = {
 };
 
 export function RegisterRoutes(app: any) {
-  app.get('/api/widgets',
+  app.get('/api/widget',
     function(request: any, response: any, next: any) {
       const args = {
       };
@@ -31,7 +31,7 @@ export function RegisterRoutes(app: any) {
       const promise = controller.GetWidgets.apply(controller, validatedArgs);
       promiseHandler(controller, promise, response, next);
     });
-  app.get('/api/widgets/:widgetId',
+  app.get('/api/widget/:widgetId',
     function(request: any, response: any, next: any) {
       const args = {
         widgetId: { "in": "path", "name": "widgetId", "required": true, "dataType": "double" },
@@ -48,6 +48,63 @@ export function RegisterRoutes(app: any) {
 
 
       const promise = controller.GetWidget.apply(controller, validatedArgs);
+      promiseHandler(controller, promise, response, next);
+    });
+  app.post('/api/widget',
+    function(request: any, response: any, next: any) {
+      const args = {
+        widgetRequest: { "in": "body", "name": "widgetRequest", "required": true, "ref": "IWidget" },
+      };
+
+      let validatedArgs: any[] = [];
+      try {
+        validatedArgs = getValidatedArgs(args, request);
+      } catch (err) {
+        return next(err);
+      }
+
+      const controller = new WidgetsController();
+
+
+      const promise = controller.CreateWidget.apply(controller, validatedArgs);
+      promiseHandler(controller, promise, response, next);
+    });
+  app.put('/api/widget',
+    function(request: any, response: any, next: any) {
+      const args = {
+        widgetRequest: { "in": "body", "name": "widgetRequest", "required": true, "ref": "IWidget" },
+      };
+
+      let validatedArgs: any[] = [];
+      try {
+        validatedArgs = getValidatedArgs(args, request);
+      } catch (err) {
+        return next(err);
+      }
+
+      const controller = new WidgetsController();
+
+
+      const promise = controller.UpdateWidget.apply(controller, validatedArgs);
+      promiseHandler(controller, promise, response, next);
+    });
+  app.delete('/api/widget/:widgetId',
+    function(request: any, response: any, next: any) {
+      const args = {
+        widgetId: { "in": "path", "name": "widgetId", "required": true, "dataType": "double" },
+      };
+
+      let validatedArgs: any[] = [];
+      try {
+        validatedArgs = getValidatedArgs(args, request);
+      } catch (err) {
+        return next(err);
+      }
+
+      const controller = new WidgetsController();
+
+
+      const promise = controller.DeleteWidget.apply(controller, validatedArgs);
       promiseHandler(controller, promise, response, next);
     });
 

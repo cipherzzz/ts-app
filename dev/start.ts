@@ -1,5 +1,4 @@
 import chokidar from "chokidar";
-import { checkDb } from "./steps/check-db";
 import { checkRedis } from "./steps/check-redis";
 import { generateExpressRoutes } from "./steps/gen-routes";
 import { registerQuitKey } from "./steps/register-quit-key";
@@ -15,7 +14,7 @@ import { debounce } from "./utils/debounce";
   await startDocker();
 
   try {
-    await Promise.all([checkDb(), checkRedis()]);
+    await Promise.all([checkRedis()]);
   } catch (err) {
     process.exit(1);
   }
@@ -36,5 +35,5 @@ import { debounce } from "./utils/debounce";
 
   chokidar.watch("./api/**/*.ts").on("change", regenerateRoutes);
 
-  registerQuitKey();
+  registerQuitKey(); 
 })();

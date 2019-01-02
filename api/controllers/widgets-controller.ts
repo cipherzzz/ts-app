@@ -1,36 +1,62 @@
-import { Get, Route, Tags } from "tsoa";
+import { Get, Post, Put, Delete, Body, Route, Tags } from "tsoa";
 import { ServerError } from "../utils/server-error";
+import { Widget } from "../database/entities/widget"
 
 export interface IWidget {
-  id: number;
+  id?: number;
   label: string;
   color: string;
 }
 
-const widgets: IWidget[] = [
-  {
-    color: "blue",
-    id: 1,
-    label: "first widget",
-  },
-];
-
-@Route("widgets")
+@Route("widget")
 export class WidgetsController {
   @Get()
-  @Tags("Widgets")
+  @Tags("Widget")
   public async GetWidgets(): Promise<IWidget[]> {
-    return widgets;
-  }
+    return Widget.find();
+  } 
 
   @Get("{widgetId}")
-  @Tags("Widgets")
-  public async GetWidget(widgetId: number): Promise<IWidget> {
-    const widget = widgets.find((w) => w.id === widgetId);
+  @Tags("Widget")
+  public async GetWidget(widgetId: number): Promise<IWidget | undefined> {
+    const widget = await Widget.findOne(widgetId);
     if (!widget) {
       throw new ServerError(`no widget found with id ${widgetId}`);
     }
 
     return widget;
   }
+
+    @Post()
+    public async CreateWidget(@Body() widgetRequest: IWidget): Promise<IWidget | undefined> {
+      let widget: Widget = new Widget();
+      widget.color = widgetRequest.color;
+      widget.label = widgetRequest.label;
+      await widget.save();
+      return widget;
+    }
+
+    @Put()
+    public async UpdateWidget(@Body() widgetRequest: IWidget): Promise<IWidget | undefined> {
+      let widget = await Widget.findOne(widgetRequest.id);
+      if (!widget) {
+        throw new ServerError(`no widget found with id ${widgetRequest.id}`);
+      }
+
+      widget.label = widgetRequest.label
+      widget.color = widgetRequest.color
+      await widget.save();
+      return widget;
+    }
+    
+    @Delete("{widgetId}")
+    public async DeleteWidget(widgetId: number): Promise<IWidget | undefined> {
+      let widget = await Widget.findOne(widgetId);
+      if (!widget) {
+        throw new ServerError(`no widget found with id ${widgetId}`);
+      }
+
+      await widget.remove();
+      return widget;
+    } 
 }

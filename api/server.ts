@@ -6,8 +6,29 @@ import methodOverride from "method-override";
 import "./controllers/widgets-controller";
 import { RegisterRoutes } from "./routes";
 import { log } from "./utils/log";
+import "reflect-metadata";
+import {initializeDbConnection} from "./config/postgres"
+import {getConnection} from "typeorm"
 
-export const server = () => {
+export async function server() {
+  let connection;
+  try {
+    connection = getConnection();
+    if (connection.isConnected) {
+      await connection.close();
+  } else {
+    initializeDbConnection()
+    .catch((error)=>{
+      console.log("Error starting DB connection: "+error)
+    })
+  }
+  } catch(error) {
+    initializeDbConnection()
+    .catch((error)=>{
+      console.log("Error starting DB connection: "+error)
+    }) 
+  }
+
   const app = express()
     .use(bodyParser.urlencoded({ extended: true }))
     .use(bodyParser.json())

@@ -13,6 +13,7 @@
     "typeorm": "ts-node -P ./api/tsconfig.json ./node_modules/.bin/typeorm",
     "db:migrate": "ts-node -P ./tsconfig-base.json ./dev/db/migrate.ts",
     "db:update": "yarn typeorm migration:run",
+    "db:drop": "yarn typeorm schema:drop",
     "test": "cross-env TS_NODE_PROJECT=./api/tsconfig.json mocha -t 15000 -r ts-node/register \"./api/**/*.spec.ts\""
   },
   "dependencies": {

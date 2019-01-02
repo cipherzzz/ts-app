@@ -1,11 +1,5 @@
-import { Connection, createConnection } from "typeorm";
-
-export let connection: Connection;
+import { createConnection } from "typeorm";
 
 export const initializeDbConnection = async (name = "default") => {
-  if (connection) {
-    return connection;
-  }
-
-  connection = await createConnection(name);
+  return await createConnection(name)
 };
