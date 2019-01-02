@@ -10,6 +10,8 @@ import "reflect-metadata";
 import {initializeDbConnection} from "./config/postgres"
 import {getConnection} from "typeorm"
 
+require('dotenv').config()
+
 export async function server() {
   let connection;
   try {
