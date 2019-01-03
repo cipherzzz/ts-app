@@ -6,7 +6,8 @@
   "author": "Luke Autry <lukeautry@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node -P tsconfig-base.json ./dev/start.ts",
+    "start": "ts-node -P tsconfig-base.json ./start.ts",
+    "start-dev": "ts-node -P tsconfig-base.json ./dev/start-dev.ts",
     "build:api": "yarn tsc -p ./api/tsconfig.json",
     "start:api": "yarn build:api && yarn tsoa:gen && node ./api/dist/start-server.js",
     "tsoa:gen": "yarn tsoa swagger -c ./api/tsoa.json && yarn tsoa routes -c ./api/tsoa.json",
