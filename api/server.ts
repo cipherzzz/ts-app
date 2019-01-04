@@ -22,20 +22,12 @@ export async function server() {
             await connection.close();
         } else {
             initializeDbConnection().catch((error) => {
-                log(
-                  chalk.redBright(
-                      `Error connecting to Database:${error}`,
-                  ),
-              );
+                log(chalk.redBright(`Error connecting to Database:${error}`));
             });
         }
     } catch (error) {
         initializeDbConnection().catch((error) => {
-          log(
-            chalk.redBright(
-              `Error connecting to Database:${error}`,
-            ),
-        );
+            log(chalk.redBright(`Error connecting to Database:${error}`));
         });
     }
 

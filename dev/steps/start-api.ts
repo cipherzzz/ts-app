@@ -9,18 +9,18 @@ let server: http.Server | undefined;
  * Starts API server
  */
 export const startApi = async () => {
-  if (server) {
-    log(chalk.red("Stopping API server..."));
-    server.close();
-    log(chalk.redBright("API server stopped"));
-  }
-
-  server = undefined;
-  Object.keys(require.cache).forEach((key) => {
-    if (minimatch(key, "*.ts", { matchBase: true })) {
-      delete require.cache[key];
+    if (server) {
+        log(chalk.red("Stopping API server..."));
+        server.close();
+        log(chalk.redBright("API server stopped"));
     }
-  });
 
-  server = await require("../../api/server").server();
+    server = undefined;
+    Object.keys(require.cache).forEach((key) => {
+        if (minimatch(key, "*.ts", { matchBase: true })) {
+            delete require.cache[key];
+        }
+    });
+
+    server = await require("../../api/server").server();
 };

@@ -6,8 +6,8 @@
   "author": "Mark Mathis <dev@@cipherz.com>",
   "license": "MIT",
   "scripts": {
-    "precommit": "yarn build:api && yarn lint",
-    "lint": "tslint --project tsconfig-base.json -t codeFrame --fix",
+    "precommit": "yarn build:api && lint-staged && yarn lint",
+    "lint": "tslint --project tsconfig-base.json -t codeFrame",
     "start": "ts-node -P tsconfig-base.json ./start.ts",
     "start-dev": "ts-node -P tsconfig-base.json ./dev/start-dev.ts",
     "build:api": "yarn tsc -p ./api/tsconfig.json",
@@ -69,7 +69,7 @@
   },
   "lint-staged": {
     "*.ts": [
-      "prettier --write --print-width 80 --tab-width 4 --no-semi --single-quote --trailing-comma all --arrow-parens always",
+      "prettier --write --print-width 80 --tab-width 4 --trailing-comma all --arrow-parens always",
       "git add"
     ]
   }

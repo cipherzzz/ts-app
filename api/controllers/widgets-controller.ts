@@ -1,4 +1,5 @@
 import { Body, Delete, Get, Post, Put, Route, Tags } from "tsoa";
+import { getRedisClient } from "../config/redis";
 import { Widget } from "../database/entities/widget";
 import { ServerError } from "../utils/server-error";
 
@@ -8,11 +9,15 @@ export interface IWidget {
     color: string;
 }
 
+const redis = getRedisClient();
+
 @Route("widget")
 export class WidgetsController {
     @Get()
     @Tags("Widget")
     public async GetWidgets(): Promise<IWidget[]> {
+        const result = await redis.get("GetWidgets_Count");
+        console.log(result);
         return Widget.find();
     }
 
@@ -44,7 +49,9 @@ export class WidgetsController {
     ): Promise<IWidget | undefined> {
         const widget = await Widget.findOne(widgetRequest.id);
         if (!widget) {
-            throw new ServerError(`no widget found with id ${widgetRequest.id}`);
+            throw new ServerError(
+                `no widget found with id ${widgetRequest.id}`,
+            );
         }
 
         widget.label = widgetRequest.label;

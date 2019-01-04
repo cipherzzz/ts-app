@@ -5,6 +5,7 @@
       "options": "allow-leading-underscore"
     },
     "no-implicit-dependencies": [true, "dev"],
-    "no-this-assignment": false
+    "no-this-assignment": false,
+    "no-console": [true, "dev"]
   }
 }
