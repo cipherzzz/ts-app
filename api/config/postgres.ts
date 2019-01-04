@@ -1,5 +1,13 @@
-import { createConnection } from "typeorm";
+import { createConnection, getConnectionOptions } from "typeorm";
 
-export const initializeDbConnection = async (name = "default") => {
-    return createConnection(name);
+export const initializeDbConnection = async () => {
+    if (process.env.CLOUDSQL) {
+        const connectionOptions = await getConnectionOptions();
+        Object.assign(connectionOptions, {
+            extra: { socketPath: process.env.CLOUDSQL },
+        });
+        return createConnection(connectionOptions);
+    } else {
+        return createConnection();
+    }
 };

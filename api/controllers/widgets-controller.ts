@@ -9,17 +9,20 @@ export interface IWidget {
     color: string;
 }
 
-const redis = getRedisClient();
+let redis: any = null;
 
 @Route("widget")
 export class WidgetsController {
+    constructor() {
+        redis = getRedisClient();
+    }
+
     @Get()
     @Tags("Widget")
     public async GetWidgets(): Promise<IWidget[]> {
         /* A Redis usage example */
         const result = await redis.get("GetWidgets_Count");
         await redis.set("GetWidgets_Count", result ? Number(result) + 1 : 1);
-
         return Widget.find();
     }
 
