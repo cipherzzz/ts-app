@@ -3,6 +3,8 @@
   "rules": {
     "variable-name": {
       "options": "allow-leading-underscore"
-    }
+    },
+    "no-implicit-dependencies": [true, "dev"],
+    "no-this-assignment": false
   }
 }
