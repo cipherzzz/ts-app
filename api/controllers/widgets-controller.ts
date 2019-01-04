@@ -16,8 +16,10 @@ export class WidgetsController {
     @Get()
     @Tags("Widget")
     public async GetWidgets(): Promise<IWidget[]> {
+        /* A Redis usage example */
         const result = await redis.get("GetWidgets_Count");
-        console.log(result);
+        await redis.set("GetWidgets_Count", result ? Number(result) + 1 : 1);
+
         return Widget.find();
     }
 
