@@ -1,0 +1,17 @@
+service: typescript-ws-template
+runtime: nodejs8
+instance_class: F4
+automatic_scaling:
+  min_instances: 1
+env_variables:
+  TYPEORM_CONNECTION: postgres
+  TYPEORM_USERNAME: vertigo_temp
+  TYPEORM_DATABASE: vertigo_temp
+  CLOUDSQL: '/cloudsql/vmi-alpha:us-central1:postgresql-default'
+  REDIS_HOST: redis-10657.c1.us-central1-2.gce.cloud.redislabs.com
+  REDIS_PORT: 10657
+  REDIS_DB_INDEX: 0
+
+  # Note that the secrets below are populated in the cloudbuild.yaml script from substitution variables
+  TYPEORM_PASSWORD: password
+  REDIS_PASSWORD: password
