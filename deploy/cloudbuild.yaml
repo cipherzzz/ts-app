@@ -10,10 +10,10 @@ steps:
         ]
 
 # Push Images       
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/$PROJECT_ID/appengine/test:short'] 
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/$PROJECT_ID/appengine/test:latest']  
+# - name: 'gcr.io/cloud-builders/docker'
+#   args: ['push', 'gcr.io/$PROJECT_ID/appengine/test:short'] 
+# - name: 'gcr.io/cloud-builders/docker'
+#   args: ['push', 'gcr.io/$PROJECT_ID/appengine/test:latest']  
   
 
 # Deploy to GAE

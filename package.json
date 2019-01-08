@@ -9,7 +9,7 @@
     "precommit": "yarn build:api && lint-staged && yarn lint",
     "lint": "tslint --project tsconfig-base.json -t codeFrame",
     "start-dev": "ts-node -P tsconfig-base.json ./dev/start-dev.ts",
-    "start": "ts-node -P tsconfig-base.json ./start.ts",
+    "start": "node ./api/dist/start-server",
     "build:api": "yarn tsc -p ./api/tsconfig.json",
     "start:api": "yarn build:api && yarn tsoa:gen && node ./api/dist/start-server.js",
     "tsoa:gen": "yarn tsoa swagger -c ./api/tsoa.json && yarn tsoa routes -c ./api/tsoa.json",
