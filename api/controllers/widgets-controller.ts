@@ -1,7 +1,6 @@
 import { Body, Delete, Get, Post, Put, Route, Tags } from "tsoa";
 import { getRedisClient } from "../config/redis";
-import { Widget } from "../database/entities/widget";
-import { ServerError } from "../utils/server-error";
+import { getDB } from "../config/postgres";
 
 export interface IWidget {
     id?: number;
@@ -10,11 +9,13 @@ export interface IWidget {
 }
 
 let redis: any = null;
+let db: any = null;
 
 @Route("widget")
 export class WidgetsController {
     constructor() {
         redis = getRedisClient();
+        db = getDB();
     }
 
     @Get()
@@ -23,56 +24,48 @@ export class WidgetsController {
         /* A Redis usage example */
         const result = await redis.get("GetWidgets_Count");
         await redis.set("GetWidgets_Count", result ? Number(result) + 1 : 1);
-        return Widget.find();
+        return db("widget");
     }
 
     @Get("{widgetId}")
     @Tags("Widget")
     public async GetWidget(widgetId: number): Promise<IWidget | undefined> {
-        const widget = await Widget.findOne(widgetId);
-        if (!widget) {
-            throw new ServerError(`no widget found with id ${widgetId}`);
-        }
-
-        return widget;
+        return db("widget").where({ id: widgetId });
     }
 
     @Post()
     public async CreateWidget(
         @Body() widgetRequest: IWidget,
     ): Promise<IWidget | undefined> {
-        const widget: Widget = new Widget();
-        widget.color = widgetRequest.color;
-        widget.label = widgetRequest.label;
-        await widget.save();
-        return widget;
+        return db("widget")
+            .insert(widgetRequest)
+            .returning("id")
+            .into("widget")
+            .then(function(ids: number[]) {
+                return db("widget").where({ id: ids[0] });
+            });
     }
 
     @Put()
     public async UpdateWidget(
         @Body() widgetRequest: IWidget,
     ): Promise<IWidget | undefined> {
-        const widget = await Widget.findOne(widgetRequest.id);
-        if (!widget) {
-            throw new ServerError(
-                `no widget found with id ${widgetRequest.id}`,
-            );
-        }
-
-        widget.label = widgetRequest.label;
-        widget.color = widgetRequest.color;
-        await widget.save();
-        return widget;
+        return db("widget")
+            .where({ id: widgetRequest.id })
+            .update(widgetRequest)
+            .then(function(id: number) {
+                return db("widget").where({ id });
+            });
     }
 
     @Delete("{widgetId}")
     public async DeleteWidget(widgetId: number): Promise<IWidget | undefined> {
-        const widget = await Widget.findOne(widgetId);
-        if (!widget) {
-            throw new ServerError(`no widget found with id ${widgetId}`);
-        }
-
-        await widget.remove();
-        return widget;
+        const deleted = await db("widget").where({ id: widgetId });
+        return db("widget")
+            .where({ id: widgetId })
+            .delete()
+            .then(function() {
+                return deleted;
+            });
     }
 }

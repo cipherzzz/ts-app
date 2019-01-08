@@ -6,6 +6,9 @@
     },
     "no-implicit-dependencies": [true, "dev"],
     "no-this-assignment": false,
-    "no-console": [true, "dev"]
+    "no-console": [true, "dev"],
+    "ordered-imports": false,
+    "only-arrow-functions": false,
+    "object-literal-sort-keys": false
   }
 }

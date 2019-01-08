@@ -3,15 +3,15 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 
           'build',
-          '-t', 'gcr.io/$PROJECT_ID/appengine/test:short',
-          '-t', 'gcr.io/$PROJECT_ID/appengine/test:latest', 
+          '-t', 'gcr.io/$PROJECT_ID/appengine/test:shorty',
+          # '-t', 'gcr.io/$PROJECT_ID/appengine/test:latest', 
           '-f', 'deploy/Dockerfile',
           '.' 
         ]
 
 # Push Images       
-# - name: 'gcr.io/cloud-builders/docker'
-#   args: ['push', 'gcr.io/$PROJECT_ID/appengine/test:short'] 
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/appengine/test:shorty'] 
 # - name: 'gcr.io/cloud-builders/docker'
 #   args: ['push', 'gcr.io/$PROJECT_ID/appengine/test:latest']  
   
@@ -23,5 +23,5 @@ steps:
   - 'deploy'
   - 'deploy/env/${_ENV}/app.yaml'
   - '--image-url'
-  - 'gcr.io/$PROJECT_ID/appengine/test:short'
+  - 'gcr.io/$PROJECT_ID/appengine/test:shorty'
   - '${_PROMOTE}'

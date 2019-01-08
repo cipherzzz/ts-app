@@ -5,9 +5,7 @@ import express from "express";
 import http from "http";
 import methodOverride from "method-override";
 import "reflect-metadata";
-import { getConnection } from "typeorm";
 
-import { initializeDbConnection } from "./config/postgres";
 import "./controllers/widgets-controller";
 import { RegisterRoutes } from "./routes";
 import { log } from "./utils/log";
@@ -15,22 +13,6 @@ import { log } from "./utils/log";
 dotenv.config();
 
 export async function server() {
-    let connection;
-    try {
-        connection = getConnection();
-        if (connection.isConnected) {
-            await connection.close();
-        } else {
-            initializeDbConnection().catch((error) => {
-                log(chalk.redBright(`Error connecting to Database:${error}`));
-            });
-        }
-    } catch (error) {
-        initializeDbConnection().catch((error) => {
-            log(chalk.redBright(`Error connecting to Database:${error}`));
-        });
-    }
-
     const app = express()
         .use(bodyParser.urlencoded({ extended: true }))
         .use(bodyParser.json())
