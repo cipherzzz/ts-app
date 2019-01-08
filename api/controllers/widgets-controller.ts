@@ -11,6 +11,11 @@ export interface IWidget {
 let redis: any = null;
 let db: any = null;
 
+// This is badly formatted
+
+const temp = { me: "test" };
+console.log(temp);
+
 @Route("widget")
 export class WidgetsController {
     constructor() {
