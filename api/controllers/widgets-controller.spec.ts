@@ -1,7 +1,7 @@
-import * as dotenv from "dotenv";
 import { expect } from "chai";
 import { WidgetsController } from "./widgets-controller";
 
+import * as dotenv from "dotenv";
 dotenv.config();
 
 describe("WidgetsController", () => {

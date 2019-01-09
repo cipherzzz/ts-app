@@ -13,10 +13,12 @@
     "build:api": "yarn tsc -p ./api/tsconfig.json",
     "start:api": "yarn build:api && yarn tsoa:gen && node ./api/dist/start-server.js",
     "tsoa:gen": "yarn tsoa swagger -c ./api/tsoa.json && yarn tsoa routes -c ./api/tsoa.json",
-    "typeorm": "ts-node -P ./api/tsconfig.json ./node_modules/.bin/typeorm",
-    "db:migrate": "ts-node -P ./tsconfig-base.json ./dev/db/migrate.ts",
-    "db:update": "yarn typeorm migration:run",
-    "db:drop": "yarn typeorm schema:drop",
+    "__internal__knex": "node node_modules/.bin/knex --knexfile knexfile.js",
+    "db:migrate": "npm run __internal__knex -- migrate:latest",
+    "db:migrate:create": "npm run __internal__knex -- migrate:make",
+    "db:rollback": "npm run __internal__knex -- migrate:rollback",
+    "db:seed": "npm run __internal__knex -- seed:run",
+    "db:init": "npm run db:migrate && npm run db:seed",
     "test": "cross-env TS_NODE_PROJECT=./api/tsconfig.json mocha -t 15000 -r ts-node/register \"./api/**/*.spec.ts\""
   },
   "dependencies": {

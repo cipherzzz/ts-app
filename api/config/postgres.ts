@@ -24,3 +24,20 @@ export function getDB() {
 
     return knex;
 }
+
+export async function dropTables() {
+    const db = getDB();
+    const tables = await db
+        .select("table_name")
+        .from("information_schema.tables")
+        .where({
+            table_schema: "public",
+        });
+
+    // drop each table in the database
+    for (const table of tables) {
+        await db.raw(`DROP TABLE IF EXISTS ${table.table_name} CASCADE`);
+    }
+
+    process.exit();
+}

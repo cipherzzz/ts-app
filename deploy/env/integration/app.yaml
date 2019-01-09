@@ -1,11 +1,10 @@
-service: ts-test
+service: typescript-ws-template
 runtime: nodejs8
 instance_class: F4
 automatic_scaling:
   min_instances: 1
 env_variables:
   PG_USER: vertigo_temp
-  PG_PASSWORD: hM7tYRyvnJxJASmrBiXY8p5exNdh7x6g9YVdxmf6ySor4ZwQwUuf7WLFknWhuV7RMoPrkYSHsk5BUSWxLAiaCDzEWBXiu8SQWsBXGvq3LswgykXReHPB5C4Ai599Mqdr
   PG_DB: vertigo_temp
   INSTANCE_CONNECTION_NAME: /cloudsql/vmi-alpha:us-central1:pg-temp
   REDIS_HOST: redis-10657.c1.us-central1-2.gce.cloud.redislabs.com
@@ -13,5 +12,5 @@ env_variables:
   REDIS_DB_INDEX: 0
 
   # Note that the secrets below are populated in the cloudbuild.yaml script from substitution variables
-  TYPEORM_PASSWORD: hM7tYRyvnJxJASmrBiXY8p5exNdh7x6g9YVdxmf6ySor4ZwQwUuf7WLFknWhuV7RMoPrkYSHsk5BUSWxLAiaCDzEWBXiu8SQWsBXGvq3LswgykXReHPB5C4Ai599Mqdr
-  REDIS_PASSWORD: 6B6Kcs95DAs3jBc6ncQh5VVukaQGGt2Y
+  PG_PASSWORD: password
+  REDIS_PASSWORD: password
