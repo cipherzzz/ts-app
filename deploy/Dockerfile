@@ -7,8 +7,6 @@ FROM node:carbon-alpine
 WORKDIR /home/node/app
 COPY --from=native-build . .
 
-RUN ls
-
 EXPOSE 3000
 
 USER node
